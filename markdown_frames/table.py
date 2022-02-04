@@ -17,7 +17,7 @@ class Column:
     def __init__(self, name: str, dtype: str):
         self.name = name
         self._converter = get_type(dtype)
-        self.dtype = self._converter.dtype if self._converter else dtype.replace("str", "string")
+        self.dtype = self._converter.dtype if self._converter else dtype
 
     def value(self, val: str) -> Any:
         """Converts provided value to column data type.

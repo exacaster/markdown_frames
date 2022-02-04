@@ -1,8 +1,12 @@
 """Setup script for the markdown parsing library."""
 
 from distutils.core import setup
+from pathlib import Path
 
 from setuptools import find_packages
+
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="markdown_frames",
@@ -16,8 +20,10 @@ setup(
     install_requires=[],
     author="Exacaster",
     author_email="support@exacaster.com",
-    url="https://exacaster.com",
+    url="https://github.com/exacaster/markdown_frames",
     description="Markdown tables parsing to pyspark / pandas DataFrames",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
