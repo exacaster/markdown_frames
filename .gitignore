@@ -1,0 +1,20 @@
+# General
+*.~lock*
+**.cache
+*.zip
+
+# Unit tests
+__pycache__
+.pytest_cache
+.coverage
+
+# Hive
+metastore_db/
+spark-warehouse/
+**/derby.log
+
+# Code analysis
+.mypy_cache
+
+# Environments
+.venv
