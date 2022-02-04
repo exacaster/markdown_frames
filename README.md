@@ -62,6 +62,7 @@ def test_your_use_case(spark: SpakSession): -> None
 
 This package supports all major datatypes, use these type names in your table definitions:
 - `int`
+- `bigint`
 - `float`
 - `double`
 - `string`

@@ -43,11 +43,13 @@ def get_type(dtype: str) -> BaseType:
 
 class IntType(BaseType):
     convert = int
-    dtype = "int"
 
     @staticmethod
     def get_for_type(dtype: str) -> Optional[BaseType]:
-        return IntType() if dtype.lower() in ("int", "integer", "bigint") else None
+        return IntType(dtype.lower()) if dtype.lower() in ("int", "bigint") else None
+
+    def __init__(self, dtype: str):
+        self.dtype = dtype
 
 
 class FloatType(BaseType):
@@ -58,7 +60,7 @@ class FloatType(BaseType):
 
     @staticmethod
     def get_for_type(dtype: str) -> Optional[BaseType]:
-        return FloatType(dtype) if dtype.lower() in ("float", "double") else None
+        return FloatType(dtype.lower()) if dtype.lower() in ("float", "double") else None
 
 
 class StringType(BaseType):
