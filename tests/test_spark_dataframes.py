@@ -43,6 +43,13 @@ def test_spark_df_markdown(spark_session: SparkSession) -> None:
         |     3.33     | {'key': [3, 1, 2]}      |  [1, 2, 2]  | 2017-12-31 |
         |      na      |         None            |  [5, 5, 5]  | 2017-12-31 |
         """
+    input_table4 = """
+        |   column1    |        column2            | column3     |  column4   |
+        | decimal(4,2) | map<string, decimal(4,2)> |  array<int> |   string   |
+        |     2.22     |     {'key': 0.5}          |  [1, 1, 1]  | 2017-01-01 |
+        |     3.33     |     {'key': 1.5}          |  [1, 2, 2]  | 2017-12-31 |
+        |      na      |         None              |  [5, 5, 5]  | 2017-12-31 |
+        """
     expected_schema1 = StructType(
         [
             StructField("column1", IntegerType()),
@@ -88,13 +95,32 @@ def test_spark_df_markdown(spark_session: SparkSession) -> None:
         epxected_schema3,
     )
 
+    epxected_schema4 = StructType(
+        [
+            StructField("column1", DecimalType(4, 2)),
+            StructField("column2", MapType(StringType(), DecimalType(4, 2))),
+            StructField("column3", ArrayType(IntegerType())),
+            StructField("column4", StringType()),
+        ]
+    )
+    expected_table4 = spark_session.createDataFrame(
+        [
+            (Decimal("2.22"), {"key": Decimal("0.5")}, [1, 1, 1], "2017-01-01"),
+            (Decimal("3.33"), {"key": Decimal("1.5")}, [1, 2, 2], "2017-12-31"),
+            (None, None, [5, 5, 5], "2017-12-31"),
+        ],
+        epxected_schema4,
+    )
+
     output_table1 = spark_df(input_table1, spark_session)
     output_table2 = spark_df(input_table2, spark_session)
     output_table3 = spark_df(input_table3, spark_session)
+    output_table4 = spark_df(input_table4, spark_session)
 
     output_table1.toPandas().equals(expected_table1.toPandas())
     output_table2.toPandas().equals(expected_table2.toPandas())
     output_table3.toPandas().equals(expected_table3.toPandas())
+    output_table4.toPandas().equals(expected_table4.toPandas())
 
 
 def test_spark_df_csv_file(spark_session: SparkSession) -> None:

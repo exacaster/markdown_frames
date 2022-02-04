@@ -1,5 +1,6 @@
 """Module dedicated to type conversions."""
 
+import ast
 import re
 from datetime import datetime
 from decimal import Decimal, localcontext
@@ -24,7 +25,7 @@ class BaseType:
         cls.subclasses.append(cls)
 
 
-def get_type(dtype: str) -> Optional[BaseType]:
+def get_type(dtype: str) -> BaseType:
     """Gets Data Type object for provided string representation.
 
     Args:
@@ -37,7 +38,7 @@ def get_type(dtype: str) -> Optional[BaseType]:
         current = factory.get_for_type(dtype)
         if current:
             return current
-    return None
+    raise InvalidValueException(f"Not supported: {dtype}")
 
 
 class IntType(BaseType):
@@ -46,7 +47,7 @@ class IntType(BaseType):
 
     @staticmethod
     def get_for_type(dtype: str) -> Optional[BaseType]:
-        return IntType() if dtype.lower() in ("int", "integer") else None
+        return IntType() if dtype.lower() in ("int", "integer", "bigint") else None
 
 
 class FloatType(BaseType):
@@ -114,3 +115,54 @@ class DecimalType(BaseType):
             raise InvalidValueException(
                 "{} not in range {}".format(value, (self.precision - self.scale) * "9")
             )
+
+
+class MapType(BaseType):
+    @staticmethod
+    def get_for_type(dtype: str) -> Optional[BaseType]:
+        lower_type = dtype.lower()
+        if lower_type.startswith("map"):
+            matches = re.match(r"map<(\w+),\s?(.+)>", dtype)
+            if not matches:
+                return None
+
+            key_type = matches.group(1)
+            value_type = matches.group(2)
+            return MapType(key_type, value_type)
+        return None
+
+    def __init__(self, key_type: str, value_type: str):
+        self.key_type = get_type(key_type)
+        self.value_type = get_type(value_type)
+        self.dtype = f"map<{self.key_type.dtype},{self.value_type.dtype}>"
+
+    def convert(self, value: str) -> dict:
+        items = ast.literal_eval(value)
+        result = {}
+        for key, val in items.items():
+            result[self.key_type.convert(key)] = self.value_type.convert(str(val))
+        return result
+
+
+class ArrayType(BaseType):
+    @staticmethod
+    def get_for_type(dtype: str) -> Optional[BaseType]:
+        lower_type = dtype.lower()
+        if lower_type.startswith("array"):
+            matches = re.match(r"array<(.+)>", dtype)
+            if not matches:
+                return None
+            val_type = matches.group(1)
+            return ArrayType(val_type)
+        return None
+
+    def __init__(self, value_type: str):
+        self.value_type = get_type(value_type)
+        self.dtype = f"array<{self.value_type.dtype}>"
+
+    def convert(self, value: str) -> list:
+        items = ast.literal_eval(value)
+        result = []
+        for val in items:
+            result.append(self.value_type.convert(val))
+        return result

@@ -1,5 +1,4 @@
 """Module dendicated for list conversions to data structures, needed for DataFrame construction"""
-import ast
 from typing import Any, Dict, List, Tuple
 
 from markdown_frames.type_definitions import get_type
@@ -30,10 +29,8 @@ class Column:
         """
         if val is None or val.lower() in ("none", "null", "na"):
             return None
-        if self._converter:
-            return self._converter.convert(val)
 
-        return ast.literal_eval(val)
+        return self._converter.convert(val)
 
 
 class Table:
