@@ -162,3 +162,23 @@ def test_spark_df_should_correctly_work_with_boolean_values(spark_session: Spark
     output = spark_df(markdown_table, spark_session)
     output.show()
     assert output.collect() == expected_table.collect()
+
+
+def test_strange_columns(spark_session: SparkSession) -> None:
+    markdown_table = """
+    | strange@column |
+    |    boolean     |
+    | -------------- |
+    | true           |
+    """
+
+    expected_table_schema = StructType([StructField("strange@column", BooleanType())])
+    expected_table = spark_session.createDataFrame(
+        [
+            (True,),
+        ],
+        expected_table_schema,
+    )
+    output = spark_df(markdown_table, spark_session)
+    assert output.columns[0] == "strange@column"
+    assert output.collect() == expected_table.collect()

@@ -77,5 +77,5 @@ class Table:
         for row in self._data:
             data.append(tuple([columns[idx].value(val) for idx, val in enumerate(row)]))
 
-        schema = ", ".join([f"{col.name} {col.dtype}" for col in columns])
+        schema = ", ".join([f"`{col.name}` {col.dtype}" for col in columns])
         return (data, schema)
