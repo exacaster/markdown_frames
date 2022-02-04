@@ -96,7 +96,7 @@ class DecimalType(BaseType):
     def get_for_type(dtype: str) -> Optional[BaseType]:
         lower_type = dtype.lower()
         if lower_type.startswith("decimal"):
-            precision, scale = map(int, re.split(r"\.|,", lower_type.removeprefix("decimal")[1:-1]))
+            precision, scale = map(int, re.split(r"\.|,", lower_type.replace("decimal", "")[1:-1]))
             return DecimalType(precision, scale)
         return None
 
