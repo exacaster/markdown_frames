@@ -15,9 +15,9 @@ def test_parse_markdown() -> None:
         |  hello  |   1     |  1.11   |
         """
     table3 = """
-        | column1 | column2 |    column3      |
-        |   str   |  int    |  map<str, int>  |
-        |  hello  |   1     |  {'asdd': 1}    |
+        | column1 | column2 |    column3         |
+        |   str   |  int    |  map<string, int>  |
+        |  hello  |   1     |  {'asdd': 1}       |
         """
 
     expected_table1 = [
@@ -32,7 +32,7 @@ def test_parse_markdown() -> None:
     ]
     expected_table3 = [
         ["column1", "column2", "column3"],
-        ["str", "int", "map<str, int>"],
+        ["str", "int", "map<string, int>"],
         ["hello", "1", "{'asdd': 1}"],
     ]
 

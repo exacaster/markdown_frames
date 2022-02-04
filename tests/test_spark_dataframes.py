@@ -37,11 +37,11 @@ def test_spark_df_markdown(spark_session: SparkSession) -> None:
         |     na       | 2017-12-31 23:59:59 |  4.444  | 2017-12-31 |
         """
     input_table3 = """
-        |   column1    |        column2       | column3     |  column4   |
-        | decimal(4,2) | map<str, array<int>> |  array<int> |   string   |
-        |     2.22     | {'key': [1, 2, 3]}   |  [1, 1, 1]  | 2017-01-01 |
-        |     3.33     | {'key': [3, 1, 2]}   |  [1, 2, 2]  | 2017-12-31 |
-        |      na      |         None         |  [5, 5, 5]  | 2017-12-31 |
+        |   column1    |        column2          | column3     |  column4   |
+        | decimal(4,2) | map<string, array<int>> |  array<int> |   string   |
+        |     2.22     | {'key': [1, 2, 3]}      |  [1, 1, 1]  | 2017-01-01 |
+        |     3.33     | {'key': [3, 1, 2]}      |  [1, 2, 2]  | 2017-12-31 |
+        |      na      |         None            |  [5, 5, 5]  | 2017-12-31 |
         """
     expected_schema1 = StructType(
         [
