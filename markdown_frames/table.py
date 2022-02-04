@@ -1,7 +1,7 @@
 """Module dendicated for list conversions to data structures, needed for DataFrame construction"""
 from typing import Any, Dict, List, Tuple
 
-from markdown_frames.type_definitions import get_type
+from markdown_frames.type_definitions import apply_converter, get_type
 
 
 class InvalidDataException(Exception):
@@ -27,10 +27,8 @@ class Column:
         Returns:
             Any: Value converted to columns' data type.
         """
-        if val is None or val.lower() in ("none", "null", "na"):
-            return None
 
-        return self._converter.convert(val)
+        return apply_converter(self._converter, val)
 
 
 class Table:

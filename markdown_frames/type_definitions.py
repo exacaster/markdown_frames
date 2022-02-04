@@ -25,6 +25,13 @@ class BaseType:
         cls.subclasses.append(cls)
 
 
+def apply_converter(converter: BaseType, val: Optional[str]) -> Any:
+    if val is None or val == "None":
+        return None
+
+    return converter.convert(val)
+
+
 def get_type(dtype: str) -> BaseType:
     """Gets Data Type object for provided string representation.
 
@@ -142,7 +149,7 @@ class MapType(BaseType):
         items = ast.literal_eval(value)
         result = {}
         for key, val in items.items():
-            result[self.key_type.convert(key)] = self.value_type.convert(str(val))
+            result[apply_converter(self.key_type, key)] = apply_converter(self.value_type, str(val))
         return result
 
 
@@ -166,5 +173,5 @@ class ArrayType(BaseType):
         items = ast.literal_eval(value)
         result = []
         for val in items:
-            result.append(self.value_type.convert(val))
+            result.append(apply_converter(self.value_type, str(val)))
         return result

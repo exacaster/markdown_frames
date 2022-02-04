@@ -26,7 +26,7 @@ def test_spark_df_markdown(spark_session: SparkSession) -> None:
         |   int   |  string |  float  |  bigint |
         | ******* | ******* | ******* | ******* |
         |   1     |   user1 |   3.14  |  111111 |
-        |   2     |   null  |   1.618 |  222222 |
+        |   2     |   None  |   1.618 |  222222 |
         |   3     |   ''    |   2.718 |  333333 |
         """
     input_table2 = """
@@ -34,21 +34,21 @@ def test_spark_df_markdown(spark_session: SparkSession) -> None:
         | decimal(4,2) |       timestamp     |  double |   string   |
         |     2.2      | 2017-01-01 23:59:59 |  2.333  | 2017-01-01 |
         |     3.33     |         None        |  3.222  | 2017-12-31 |
-        |     na       | 2017-12-31 23:59:59 |  4.444  | 2017-12-31 |
+        |     None     | 2017-12-31 23:59:59 |  4.444  | 2017-12-31 |
         """
     input_table3 = """
         |   column1    |        column2          | column3     |  column4   |
         | decimal(4,2) | map<string, array<int>> |  array<int> |   string   |
         |     2.22     | {'key': [1, 2, 3]}      |  [1, 1, 1]  | 2017-01-01 |
         |     3.33     | {'key': [3, 1, 2]}      |  [1, 2, 2]  | 2017-12-31 |
-        |      na      |         None            |  [5, 5, 5]  | 2017-12-31 |
+        |     None     |         None            |  [5, 5, 5]  | 2017-12-31 |
         """
     input_table4 = """
         |   column1    |        column2            | column3     |  column4   |
         | decimal(4,2) | map<string, decimal(4,2)> |  array<int> |   string   |
         |     2.22     |     {'key': 0.5}          |  [1, 1, 1]  | 2017-01-01 |
-        |     3.33     |     {'key': 1.5}          |  [1, 2, 2]  | 2017-12-31 |
-        |      na      |         None              |  [5, 5, 5]  | 2017-12-31 |
+        |     3.33     |     {'key': None}         |  [1, 2, 2]  | 2017-12-31 |
+        |     None     |         None              |  [5, 5, 5]  | 2017-12-31 |
         """
     expected_schema1 = StructType(
         [
@@ -106,7 +106,7 @@ def test_spark_df_markdown(spark_session: SparkSession) -> None:
     expected_table4 = spark_session.createDataFrame(
         [
             (Decimal("2.22"), {"key": Decimal("0.5")}, [1, 1, 1], "2017-01-01"),
-            (Decimal("3.33"), {"key": Decimal("1.5")}, [1, 2, 2], "2017-12-31"),
+            (Decimal("3.33"), {"key": None}, [1, 2, 2], "2017-12-31"),
             (None, None, [5, 5, 5], "2017-12-31"),
         ],
         epxected_schema4,

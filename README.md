@@ -48,7 +48,7 @@ def test_your_use_case(spark: SpakSession): -> None
         |   int   |  string |  float  |  bigint |
         | ------- | ------- | ------- | ------- |
         |   1     |   user1 |   3.14  |  111111 |
-        |   2     |   null  |   1.618 |  222222 |
+        |   2     |   None  |   1.618 |  222222 |
         |   3     |   ''    |   2.718 |  333333 |
         """
     expected_df = spark_df(expected_data, spark)
@@ -71,6 +71,8 @@ This package supports all major datatypes, use these type names in your table de
 - `decimal(precision,scale)` (scale and precision must be integers)
 - `array<int>` (int can be replaced by  any of mentioned types)
 - `map<string,int>` (string and int can be replaced by any of mentioned types)
+
+For `null` values use `None` keyword.
 
 ## License
 
