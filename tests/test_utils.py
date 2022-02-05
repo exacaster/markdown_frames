@@ -47,6 +47,10 @@ def test_parse_markdown() -> None:
 
 def test_parse_file() -> None:
     output_table = parse_file("tests/data/test.csv")
-    expected_table = [["name1", "name2", "Name3"], ["string", "int", "float"], ["haha", "1", "1.1"]]
+    expected_table = [
+        ["name1", "name2", "Name3"],
+        ["string", "int", "float"],
+        ["haha", "1", "1.1"],
+    ]
 
     assert output_table == expected_table

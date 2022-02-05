@@ -2,7 +2,6 @@ from datetime import datetime
 from decimal import Decimal
 
 import pandas as pd
-
 from markdown_frames.pandas_dataframe import pandas_df, pandas_df_from_csv
 
 
@@ -24,7 +23,11 @@ def test_pandas_df() -> None:
         """
 
     expected_table1 = pd.DataFrame(
-        [(1, "user1", 3.14, 111_111), (2, None, 1.618, 222_222), (3, "user4", 2.718, 333_333)],
+        [
+            (1, "user1", 3.14, 111_111),
+            (2, None, 1.618, 222_222),
+            (3, "user4", 2.718, 333_333),
+        ],
         columns=["column1", "column2", "column3", "column4"],
     )
     expected_table2 = pd.DataFrame(

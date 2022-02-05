@@ -1,6 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
 
+from markdown_frames.spark_dataframe import spark_df, spark_df_from_csv
 from pyspark.sql import SparkSession
 from pyspark.sql.types import (
     ArrayType,
@@ -16,8 +17,6 @@ from pyspark.sql.types import (
     StructType,
     TimestampType,
 )
-
-from markdown_frames.spark_dataframe import spark_df, spark_df_from_csv
 
 
 def test_spark_df_markdown(spark_session: SparkSession) -> None:
@@ -59,7 +58,11 @@ def test_spark_df_markdown(spark_session: SparkSession) -> None:
         ]
     )
     expected_table1 = spark_session.createDataFrame(
-        [(1, "user1", 3.14, 111_111), (2, None, 1.618, 222_222), (3, "", 2.718, 333_333)],
+        [
+            (1, "user1", 3.14, 111_111),
+            (2, None, 1.618, 222_222),
+            (3, "", 2.718, 333_333),
+        ],
         expected_schema1,
     )
     expected_schema2 = StructType(
@@ -148,7 +151,9 @@ def test_spark_df_csv_file(spark_session: SparkSession) -> None:
     assert output_2.toPandas().equals(expected_2.toPandas())
 
 
-def test_spark_df_should_correctly_work_with_boolean_values(spark_session: SparkSession) -> None:
+def test_spark_df_should_correctly_work_with_boolean_values(
+    spark_session: SparkSession,
+) -> None:
     markdown_table = """
     | is_sms_active |
     |    boolean    |
@@ -158,9 +163,10 @@ def test_spark_df_should_correctly_work_with_boolean_values(spark_session: Spark
     """
 
     expected_table_schema = StructType([StructField("sub_billing_id", BooleanType())])
-    expected_table = spark_session.createDataFrame([(True,), (False,)], expected_table_schema)
+    expected_table = spark_session.createDataFrame(
+        [(True,), (False,)], expected_table_schema
+    )
     output = spark_df(markdown_table, spark_session)
-    output.show()
     assert output.collect() == expected_table.collect()
 
 

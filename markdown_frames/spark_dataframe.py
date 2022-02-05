@@ -1,10 +1,9 @@
 """Functions that parse markdown table or CSV file to Apache Spark (PySpark)
 DataFrame.
 """
-from pyspark.sql import DataFrame, SparkSession
-
 from markdown_frames.table import Table
 from markdown_frames.utils import parse_file, parse_markdown
+from pyspark.sql import DataFrame, SparkSession
 
 
 def spark_df(markdown: str, spark: SparkSession) -> DataFrame:
@@ -23,7 +22,9 @@ def spark_df(markdown: str, spark: SparkSession) -> DataFrame:
     return spark.createDataFrame(data, schema)
 
 
-def spark_df_from_csv(path: str, spark: SparkSession, delimiter: str = ",") -> DataFrame:
+def spark_df_from_csv(
+    path: str, spark: SparkSession, delimiter: str = ","
+) -> DataFrame:
     """Returns a Spark DataFrame built from CSV. Second line in CSV must represent data types.
 
     CSV file format
