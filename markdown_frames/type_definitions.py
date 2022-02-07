@@ -67,7 +67,9 @@ class FloatType(BaseType):
 
     @staticmethod
     def get_for_type(dtype: str) -> Optional[BaseType]:
-        return FloatType(dtype.lower()) if dtype.lower() in ("float", "double") else None
+        return (
+            FloatType(dtype.lower()) if dtype.lower() in ("float", "double") else None
+        )
 
 
 class StringType(BaseType):
@@ -106,7 +108,9 @@ class DecimalType(BaseType):
     def get_for_type(dtype: str) -> Optional[BaseType]:
         lower_type = dtype.lower()
         if lower_type.startswith("decimal"):
-            precision, scale = map(int, re.split(r"\.|,", lower_type.replace("decimal", "")[1:-1]))
+            precision, scale = map(
+                int, re.split(r"\.|,", lower_type.replace("decimal", "")[1:-1])
+            )
             return DecimalType(precision, scale)
         return None
 
@@ -149,7 +153,9 @@ class MapType(BaseType):
         items = ast.literal_eval(value)
         result = {}
         for key, val in items.items():
-            result[apply_converter(self.key_type, key)] = apply_converter(self.value_type, str(val))
+            result[apply_converter(self.key_type, key)] = apply_converter(
+                self.value_type, str(val)
+            )
         return result
 
 

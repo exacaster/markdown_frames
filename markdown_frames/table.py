@@ -36,13 +36,18 @@ class Table:
 
     def __init__(self, table_rows: List[List[str]]):
         if len(table_rows) < 1:
-            raise InvalidDataException("Table must contain at least 2 rows - header and types")
+            raise InvalidDataException(
+                "Table must contain at least 2 rows - header and types"
+            )
         self._column_names = table_rows[0]
         self._column_types = table_rows[1]
         self._data = table_rows[2:]
 
     def _columns(self) -> List[Column]:
-        return [Column(name, dtype) for name, dtype in zip(self._column_names, self._column_types)]
+        return [
+            Column(name, dtype)
+            for name, dtype in zip(self._column_names, self._column_types)
+        ]
 
     def to_pandas_data(self) -> Dict[str, List[Any]]:
         """Converts Table to data needed for Pandas DataFrame.

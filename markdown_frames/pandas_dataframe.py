@@ -1,7 +1,6 @@
 """Functions that parse markdown table or CSV file to Pandas DataFrame."""
 
 import pandas as pd
-
 from markdown_frames.table import Table
 from markdown_frames.utils import parse_file, parse_markdown
 
