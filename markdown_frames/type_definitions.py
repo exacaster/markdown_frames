@@ -103,6 +103,17 @@ class DateTimeType(BaseType):
         return datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
 
 
+class DateType(BaseType):
+    dtype = "date"
+
+    @staticmethod
+    def get_for_type(dtype: str) -> Optional[BaseType]:
+        return DateType() if dtype.lower() == "date" else None
+
+    def convert(self, value: str) -> datetime:
+        return datetime.strptime(value, "%Y-%m-%d")
+
+
 class DecimalType(BaseType):
     @staticmethod
     def get_for_type(dtype: str) -> Optional[BaseType]:

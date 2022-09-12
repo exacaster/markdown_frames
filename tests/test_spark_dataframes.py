@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 
 from markdown_frames.spark_dataframe import spark_df, spark_df_from_csv
@@ -6,6 +6,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import (
     ArrayType,
     BooleanType,
+    DateType,
     DecimalType,
     DoubleType,
     FloatType,
@@ -165,6 +166,27 @@ def test_spark_df_should_correctly_work_with_boolean_values(
     expected_table_schema = StructType([StructField("sub_billing_id", BooleanType())])
     expected_table = spark_session.createDataFrame(
         [(True,), (False,)], expected_table_schema
+    )
+    output = spark_df(markdown_table, spark_session)
+    assert output.collect() == expected_table.collect()
+
+
+def test_spark_df_should_correctlywork_with_dates(
+    spark_session: SparkSession,
+) -> None:
+    markdown_table = """
+    |      dt       |
+    |    date       |
+    | ------------- |
+    | 2020-01-01    |
+    """
+
+    expected_table_schema = StructType([StructField("sub_billing_id", DateType())])
+    expected_table = spark_session.createDataFrame(
+        [
+            (date(2020, 1, 1),),
+        ],
+        expected_table_schema,
     )
     output = spark_df(markdown_table, spark_session)
     assert output.collect() == expected_table.collect()
