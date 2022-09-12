@@ -67,6 +67,7 @@ This package supports all major datatypes, use these type names in your table de
 - `double`
 - `string`
 - `boolean`
+- `date`
 - `timestamp`
 - `decimal(precision,scale)` (scale and precision must be integers)
 - `array<int>` (int can be replaced by  any of mentioned types)
