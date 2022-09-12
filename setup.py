@@ -10,7 +10,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="markdown_frames",
-    version="1.0.5",
+    version="1.0.6",
     packages=find_packages(
         exclude=(
             "tests",
